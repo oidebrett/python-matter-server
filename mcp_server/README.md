@@ -1,77 +1,65 @@
 # Matter MCP Server
 
-This is a Matter Control Protocol (MCP) server implementation that wraps the Matter Server WebSocket API. It provides a command-line interface to interact with Matter devices through the Matter Server.
+This is a Matter Control Protocol (MCP) server implementation that wraps the Matter Server WebSocket API. It provides a command-line interface to interact with Matter devices through the Matter Server using aiohttp for WebSocket communication.
 
 ## Installation
 
-1. Install the MCP CLI package:
+1. Install the required packages:
 ```bash
-pip install mcp[cli]
-```
-
-2. Install the Matter Server client:
-```bash
-pip install python-matter-server
+pip install mcp[cli] python-matter-server aiohttp
 ```
 
 ## Usage
 
-The MCP server can be run in two transport modes:
+The MCP server provides an async interface to communicate with Matter devices. Here's a basic example:
 
-### STDIO Transport
+```python
+import asyncio
+from matter_mcp_server import test_light_on
 
-This mode is useful for direct command-line interaction or when integrating with other tools that communicate via standard input/output.
-
-```bash
-python mcp_stdio_example.py
-```
-
-Or with custom Matter server URL:
-```bash
-MATTER_SERVER_URL="ws://custom-host:5580/ws" python mcp_stdio_example.py
-```
-
-### SSE (Server-Sent Events) Transport
-
-This mode is useful for web applications or services that need to consume Matter server events.
-
-```bash
-python mcp_sse_example.py
-```
-
-Or with command-line arguments:
-```bash
-python mcp_server.py --transport sse --matter-server-url ws://localhost:5580/ws
+# Turn on a light with node_id 3 and endpoint_id 1
+asyncio.run(test_light_on(3, 1))
 ```
 
 ## Available Commands
 
-The MCP server provides the following Matter control commands:
+The MCP server provides the following Matter control commands through WebSocket:
 
-- `commission_with_code`: Commission a device using QR Code or Manual Pairing Code
-- `set_wifi_credentials`: Set WiFi credentials for device commissioning
-- `set_thread_dataset`: Set Thread Operational dataset
-- `open_commissioning_window`: Open a commissioning window on a node
-- `discover_commissionable_nodes`: Discover available Matter devices
-- `get_matter_fabrics`: Get Matter fabrics from a device
-- `remove_matter_fabric`: Remove a Matter fabric from a device
-- `ping_node`: Ping a node
-- `get_node_ip_addresses`: Get IP addresses for a node
-- `remove_node`: Remove a Matter node from the fabric
-- `interview_node`: Interview a node
-- `import_test_node`: Import test nodes from a dump
+### Device Control
+- `device_command`: Send commands to devices (e.g., turn on/off lights)
 - `read_attribute`: Read node attributes
 - `write_attribute`: Write node attributes
-- `check_node_update`: Check for node updates
-- `update_node`: Update a node
+
+### Device Management
+- `commission_with_code`: Commission a device using QR Code or Manual Pairing Code
+- `get_node`: Get detailed information about a specific node
+- `get_nodes`: Get information about all nodes
 - `start_listening`: Start listening for Matter events
 
-## Requirements
+### Network Configuration
+- `set_wifi_credentials`: Set WiFi credentials for device commissioning
+- `set_thread_dataset`: Set Thread Operational dataset
 
-- Python 3.11 or higher
-- Running Matter Server instance (default: ws://localhost:5580/ws)
-- MCP CLI package
-- python-matter-server package
+## WebSocket Communication
+
+The server uses aiohttp for WebSocket communication with the Matter Server. Default connection:
+- Host: ws://127.0.0.1
+- Port: 5580
+- Endpoint: /ws
+
+Example WebSocket message format:
+```json
+{
+    "message_id": "1",
+    "command": "device_command",
+    "args": {
+        "endpoint_id": 1,
+        "node_id": 3,
+        "cluster_id": 6,
+        "command_name": "On"
+    }
+}
+```
 
 ## Environment Variables
 
@@ -79,26 +67,32 @@ The MCP server provides the following Matter control commands:
 
 ## Example Usage
 
-Using STDIO transport with MCP CLI:
+```python
+from matter_mcp_server import device_command, read_attribute
 
-```bash
-# Start the server
-python mcp_stdio_example.py
+async def control_light(node_id: int, endpoint_id: int):
+    # Turn on light
+    response = await device_command(
+        endpoint_id=endpoint_id,
+        node_id=node_id,
+        cluster_id=6,     # OnOff cluster ID
+        command_name="On"
+    )
 
-# In another terminal, use MCP CLI to interact
-mcp commission-with-code "MT:Y.K9042C00KA0661B00" false
-mcp read-attribute 1 "endpoint=1;cluster=basic;attribute=vendor_name"
+    # Read light state
+    state = await read_attribute(
+        node_id=node_id,
+        attribute_path=f"endpoint={endpoint_id};cluster=on_off;attribute=on_off"
+    )
 ```
 
-Using SSE transport for web applications:
+## Requirements
 
-```bash
-# Start the server with SSE transport
-python mcp_sse_example.py
-
-# Connect to the SSE endpoint (typically http://localhost:5001/events)
-# and consume events in your web application
-```
+- Python 3.11 or higher
+- Running Matter Server instance
+- aiohttp
+- MCP CLI package
+- python-matter-server package
 
 ## Related Projects
 
