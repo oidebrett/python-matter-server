@@ -215,13 +215,13 @@ async def test_light_on(node_id: int, endpoint_id: int) -> None:
             endpoint_id=endpoint_id,
             node_id=node_id,
             cluster_id=6,  # OnOff cluster ID
-            command_name="On",  # The On command
+            command_name="Toggle",  # The Toggle command
         )
         print(f"Light ON command response: {response}")
 
         state = await read_attribute(
             node_id=node_id,
-            attribute_path=f"endpoint={endpoint_id};cluster=on_off;attribute=on_off",
+            attribute_path=f"{endpoint_id}/6/0",
         )
         print(f"Current light state: {state}")
 
