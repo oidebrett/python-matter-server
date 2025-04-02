@@ -21,6 +21,7 @@ dependencies = [
   "coloredlogs",
   "orjson",
   "home-assistant-chip-clusters==2024.11.4",
+  "mcp[cli]>=1.6.0",
 ]
 description = "Open Home Foundation Matter Server"
 license = {text = "Apache-2.0"}

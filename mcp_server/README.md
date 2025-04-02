@@ -4,91 +4,86 @@ This is a Matter Control Protocol (MCP) server implementation that wraps the Mat
 
 ## Installation
 
-1. Install the required packages:
+1. Install uv
+
 ```bash
-pip install mcp[cli] python-matter-server aiohttp
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-## Usage
-
-The MCP server provides an async interface to communicate with Matter devices. Here's a basic example:
-
-```python
-import asyncio
-from matter_mcp_server import test_light_on
-
-# Turn on a light with node_id 3 and endpoint_id 1
-asyncio.run(test_light_on(3, 1))
+2. Install the required packages:
+```bash
+source ../.venv/bin/activate
+uv add "mcp[cli]" aiohttp
 ```
 
-## Available Commands
+## Installing MCP in Claude
 
-The MCP server provides the following Matter control commands through WebSocket:
+5. Edit the claude_desktop_config.json config file
 
-### Device Control
-- `device_command`: Send commands to devices (e.g., turn on/off lights)
-- `read_attribute`: Read node attributes
-- `write_attribute`: Write node attributes
+This file is located in different locations depending on your operating system. e.g
+Ubuntu: ~/.config/Claude
+MacOS: ~/Library/Application Support/Claude
+Windows: %APPDATA%\Claude
 
-### Device Management
-- `commission_with_code`: Commission a device using QR Code or Manual Pairing Code
-- `get_node`: Get detailed information about a specific node
-- `get_nodes`: Get information about all nodes
-- `start_listening`: Start listening for Matter events
+6. Add the following to claude_desktop_config.json:
 
-### Network Configuration
-- `set_wifi_credentials`: Set WiFi credentials for device commissioning
-- `set_thread_dataset`: Set Thread Operational dataset
-
-## WebSocket Communication
-
-The server uses aiohttp for WebSocket communication with the Matter Server. Default connection:
-- Host: ws://127.0.0.1
-- Port: 5580
-- Endpoint: /ws
-
-Example WebSocket message format:
-```json
+```bash
 {
-    "message_id": "1",
-    "command": "device_command",
-    "args": {
-        "endpoint_id": 1,
-        "node_id": 3,
-        "cluster_id": 6,
-        "command_name": "On"
+    "mcpServers": {
+        "matter-mcp-server": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "[REPLACE_WITH_FULL_PATH_TO_YOUR_REPO]",
+                "run",
+                "matter_mcp_server.py"
+            ]
+        }
     }
 }
 ```
 
-## Environment Variables
+7. Restart Claude Desktop and wait for mcp tools to load
 
-- `MATTER_SERVER_URL`: WebSocket URL of the Matter server (default: ws://localhost:5580/ws)
+8. Claude Code - MCP Server install
 
-## Example Usage
+If you have Claude Code installed then execute the following commands in a terminal
 
-```python
-from matter_mcp_server import device_command, read_attribute
-
-async def control_light(node_id: int, endpoint_id: int):
-    # Turn on light
-    response = await device_command(
-        endpoint_id=endpoint_id,
-        node_id=node_id,
-        cluster_id=6,     # OnOff cluster ID
-        command_name="On"
-    )
-
-    # Read light state
-    state = await read_attribute(
-        node_id=node_id,
-        attribute_path=f"endpoint={endpoint_id};cluster=on_off;attribute=on_off"
-    )
+```bash
+claude mcp add
 ```
+
+```bash
+mater_mcp_server
+```
+
+```bash
+uv --directory [REPLACE_WITH_FULL_PATH_TO_YOUR_REPO] run matter_mcp_server.py
+```
+
+## Testing
+### Testing with a Matter device?
+
+A Matter Virtual Device (MVD) is a software-based emulator provided by Google that simulates Matter-compatible smart home devices for testing and development. It allows developers to validate device behavior without physical hardware. To set it up, use the Matter Virtual Device Tool, follow the steps in the [MVD official guide](https://developers.home.google.com/matter/tools/virtual-device)
+
+Run the MVD
+```bash
+MVD
+```
+
+### Testing with pytest
+
+Ensure you identify the node id and endpoint id and run pytest
+
+```bash
+python3 -m pytest --node_id=1 --endpoint_id=13
+```
+
 
 ## Requirements
 
 - Python 3.11 or higher
+- uv
 - Running Matter Server instance
 - aiohttp
 - MCP CLI package

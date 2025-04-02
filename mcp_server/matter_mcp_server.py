@@ -203,34 +203,8 @@ async def device_command(
     return await send_websocket_command(message)
 
 
-async def test_light_on(node_id: int, endpoint_id: int) -> None:
-    """Test turning on a light using device_command.
-
-    Args:
-        node_id: The node ID of the light device to control
-        endpoint_id: The endpoint ID of the light device
-    """
-    try:
-        response = await device_command(
-            endpoint_id=endpoint_id,
-            node_id=node_id,
-            cluster_id=6,  # OnOff cluster ID
-            command_name="Toggle",  # The Toggle command
-        )
-        print(f"Light ON command response: {response}")
-
-        state = await read_attribute(
-            node_id=node_id,
-            attribute_path=f"{endpoint_id}/6/0",
-        )
-        print(f"Current light state: {state}")
-
-    except aiohttp.ClientError as err:
-        print(f"Error turning light on: {err}")
-
-
 if __name__ == "__main__":
-    asyncio.run(test_light_on(3, 1))
+    # asyncio.run(test_light_on(1, 13))
     #
     # Initialize and run the server
-    # mcp.run(transport='stdio')
+    mcp.run(transport="stdio")

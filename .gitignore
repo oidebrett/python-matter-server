@@ -171,3 +171,8 @@ venv39/
 
 # prebuilt dashboard files
 matter_server/dashboard/
+
+#uv.lock
+#   uv stores project-wide configurations in uv.lock, but it is recommended to not include it
+#   in version control.
+uv.lock

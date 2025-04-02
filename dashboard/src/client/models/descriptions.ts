@@ -26,10 +26,10 @@ export const device_types: Record<number, DeviceType> = {
     "id": 4293984257,
     "label": "Orphan Clusters",
     "clusters": [
-      28,
       66,
       67,
-      68
+      68,
+      28
     ]
   },
   "22": {
@@ -70,26 +70,26 @@ export const device_types: Record<number, DeviceType> = {
     "id": 1296,
     "label": "Electrical Sensor",
     "clusters": [
-      29,
       144,
       145,
-      156
+      156,
+      29
     ]
   },
   "18": {
     "id": 18,
     "label": "OTA Requestor",
     "clusters": [
-      29,
-      42
+      42,
+      29
     ]
   },
   "20": {
     "id": 20,
     "label": "OTA Provider",
     "clusters": [
-      29,
-      41
+      41,
+      29
     ]
   },
   "14": {
@@ -104,35 +104,35 @@ export const device_types: Record<number, DeviceType> = {
     "id": 19,
     "label": "Bridged Node",
     "clusters": [
+      57,
       29,
       46,
-      47,
-      57
+      47
     ]
   },
   "256": {
     "id": 256,
     "label": "On/Off Light",
     "clusters": [
+      98,
       3,
       4,
       6,
       8,
-      29,
-      98
+      29
     ]
   },
   "257": {
     "id": 257,
     "label": "Dimmable Light",
     "clusters": [
+      98,
       3,
       4,
       6,
       8,
       29,
-      30,
-      98
+      30
     ]
   },
   "268": {
@@ -194,10 +194,10 @@ export const device_types: Record<number, DeviceType> = {
       1027,
       1028,
       3,
-      1026,
-      4,
-      8,
       6,
+      1026,
+      8,
+      4,
       29,
       30
     ]
@@ -262,9 +262,9 @@ export const device_types: Record<number, DeviceType> = {
     "id": 21,
     "label": "Contact Sensor",
     "clusters": [
+      29,
       3,
-      69,
-      29
+      69
     ]
   },
   "262": {
@@ -283,8 +283,8 @@ export const device_types: Record<number, DeviceType> = {
     "clusters": [
       3,
       29,
-      30,
-      1030
+      1030,
+      30
     ]
   },
   "770": {
@@ -318,9 +318,9 @@ export const device_types: Record<number, DeviceType> = {
     "id": 775,
     "label": "Humidity Sensor",
     "clusters": [
-      1029,
+      29,
       3,
-      29
+      1029
     ]
   },
   "2128": {
@@ -355,9 +355,9 @@ export const device_types: Record<number, DeviceType> = {
     "label": "Window Covering",
     "clusters": [
       258,
+      98,
       3,
       4,
-      98,
       29
     ]
   },
@@ -374,9 +374,9 @@ export const device_types: Record<number, DeviceType> = {
     "id": 768,
     "label": "Heating/Cooling Unit",
     "clusters": [
-      98,
-      3,
       514,
+      3,
+      98,
       4,
       6,
       8,
@@ -388,14 +388,14 @@ export const device_types: Record<number, DeviceType> = {
     "id": 769,
     "label": "Thermostat",
     "clusters": [
-      3,
-      4,
-      29,
-      30,
-      56,
-      98,
       513,
-      516
+      98,
+      3,
+      516,
+      4,
+      56,
+      29,
+      30
     ]
   },
   "43": {
@@ -416,13 +416,13 @@ export const device_types: Record<number, DeviceType> = {
       1284,
       1285,
       6,
-      1287,
-      1288,
       1286,
-      1290,
+      1288,
       1289,
-      1292,
+      1290,
       1291,
+      1292,
+      1287,
       1294,
       29
     ]
@@ -435,10 +435,10 @@ export const device_types: Record<number, DeviceType> = {
       1284,
       1285,
       6,
-      1287,
-      1288,
       1286,
+      1288,
       1289,
+      1287,
       1291,
       29
     ]
@@ -451,16 +451,16 @@ export const device_types: Record<number, DeviceType> = {
       1284,
       1285,
       6,
-      1287,
-      8,
-      1288,
-      1290,
       1286,
+      1288,
+      1289,
+      1290,
+      1291,
       1292,
       1293,
       1294,
-      1289,
-      1291,
+      8,
+      1287,
       29,
       30
     ]
@@ -473,15 +473,15 @@ export const device_types: Record<number, DeviceType> = {
       1284,
       1285,
       6,
-      1287,
-      8,
-      1288,
-      1290,
       1286,
-      1292,
+      1288,
       1289,
-      1294,
+      1290,
       1291,
+      1292,
+      8,
+      1294,
+      1287,
       29,
       30
     ]
@@ -526,14 +526,14 @@ export const device_types: Record<number, DeviceType> = {
     "label": "Room Air Conditioner",
     "clusters": [
       513,
-      98,
       514,
-      516,
-      1029,
       3,
+      98,
+      1029,
+      6,
+      516,
       1026,
       4,
-      6,
       29
     ]
   },
@@ -572,12 +572,12 @@ export const device_types: Record<number, DeviceType> = {
       1029,
       1066,
       1067,
-      1036,
+      1068,
       1069,
-      1070,
       1037,
       1071,
-      1068,
+      1070,
+      1036,
       1043,
       1045,
       91,
@@ -693,9 +693,9 @@ export const device_types: Record<number, DeviceType> = {
     "label": "Water Freeze Detector",
     "clusters": [
       128,
+      29,
       3,
-      69,
-      29
+      69
     ]
   },
   "66": {
@@ -712,9 +712,9 @@ export const device_types: Record<number, DeviceType> = {
     "label": "Water Leak Detector",
     "clusters": [
       128,
+      29,
       3,
-      69,
-      29
+      69
     ]
   },
   "68": {
@@ -722,9 +722,9 @@ export const device_types: Record<number, DeviceType> = {
     "label": "Rain Sensor",
     "clusters": [
       128,
+      29,
       3,
-      69,
-      29
+      69
     ]
   },
   "144": {
@@ -741,9 +741,9 @@ export const device_types: Record<number, DeviceType> = {
     "id": 145,
     "label": "Thread Border Router",
     "clusters": [
+      29,
       1106,
-      53,
-      29
+      53
     ]
   },
   "4293984259": {
@@ -786,9 +786,9 @@ export const device_types: Record<number, DeviceType> = {
     "id": 119,
     "label": "Cook Surface",
     "clusters": [
+      86,
       1026,
       29,
-      86,
       6
     ]
   },
@@ -11381,6 +11381,114 @@ export const clusters: Record<number, ClusterDescription> = {
       "65533": {
         "id": 65533,
         "cluster_id": 1296,
+        "label": "ClusterRevision",
+        "type": "uint"
+      }
+    }
+  },
+  "1363": {
+    "id": 1363,
+    "label": "WebRTCTransportProvider",
+    "attributes": {
+      "0": {
+        "id": 0,
+        "cluster_id": 1363,
+        "label": "CurrentSessions",
+        "type": "List[WebRTCTransportProvider.Structs.WebRTCSessionStruct]"
+      },
+      "65528": {
+        "id": 65528,
+        "cluster_id": 1363,
+        "label": "GeneratedCommandList",
+        "type": "List[uint]"
+      },
+      "65529": {
+        "id": 65529,
+        "cluster_id": 1363,
+        "label": "AcceptedCommandList",
+        "type": "List[uint]"
+      },
+      "65530": {
+        "id": 65530,
+        "cluster_id": 1363,
+        "label": "EventList",
+        "type": "List[uint]"
+      },
+      "65531": {
+        "id": 65531,
+        "cluster_id": 1363,
+        "label": "AttributeList",
+        "type": "List[uint]"
+      },
+      "65532": {
+        "id": 65532,
+        "cluster_id": 1363,
+        "label": "FeatureMap",
+        "type": "uint"
+      },
+      "65533": {
+        "id": 65533,
+        "cluster_id": 1363,
+        "label": "ClusterRevision",
+        "type": "uint"
+      }
+    }
+  },
+  "1366": {
+    "id": 1366,
+    "label": "Chime",
+    "attributes": {
+      "0": {
+        "id": 0,
+        "cluster_id": 1366,
+        "label": "InstalledChimeSounds",
+        "type": "List[Chime.Structs.ChimeSoundStruct]"
+      },
+      "1": {
+        "id": 1,
+        "cluster_id": 1366,
+        "label": "ActiveChimeID",
+        "type": "uint"
+      },
+      "2": {
+        "id": 2,
+        "cluster_id": 1366,
+        "label": "Enabled",
+        "type": "bool"
+      },
+      "65528": {
+        "id": 65528,
+        "cluster_id": 1366,
+        "label": "GeneratedCommandList",
+        "type": "List[uint]"
+      },
+      "65529": {
+        "id": 65529,
+        "cluster_id": 1366,
+        "label": "AcceptedCommandList",
+        "type": "List[uint]"
+      },
+      "65530": {
+        "id": 65530,
+        "cluster_id": 1366,
+        "label": "EventList",
+        "type": "List[uint]"
+      },
+      "65531": {
+        "id": 65531,
+        "cluster_id": 1366,
+        "label": "AttributeList",
+        "type": "List[uint]"
+      },
+      "65532": {
+        "id": 65532,
+        "cluster_id": 1366,
+        "label": "FeatureMap",
+        "type": "uint"
+      },
+      "65533": {
+        "id": 65533,
+        "cluster_id": 1366,
         "label": "ClusterRevision",
         "type": "uint"
       }
