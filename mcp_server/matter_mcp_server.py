@@ -203,8 +203,21 @@ async def device_command(
     return await send_websocket_command(message)
 
 
+@mcp.tool()
+async def commission_on_network(setup_pin_code: int = 20202021) -> list[dict[str, Any]]:
+    """Commission a device that's already on the network.
+
+    Args:
+        setup_pin_code: The setup PIN code for commissioning. Default value is 20202021.
+    """
+    message = {
+        "message_id": "1",
+        "command": "commission_on_network",
+        "args": {"setup_pin_code": setup_pin_code},
+    }
+    return await send_websocket_command(message)
+
+
 if __name__ == "__main__":
-    # asyncio.run(test_light_on(1, 13))
-    #
     # Initialize and run the server
     mcp.run(transport="stdio")
