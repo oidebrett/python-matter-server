@@ -7,7 +7,13 @@ from typing import Any, Optional
 
 import aiohttp
 from aiohttp import WSMsgType
+import anyio
 from mcp.server.fastmcp import FastMCP
+
+# Initialize FastMCP server with CORS configuration
+mcp = FastMCP(
+    "matter-mcp-server-sse",
+)
 
 
 class WebSocketConnection:
@@ -111,7 +117,6 @@ class WebSocketConnection:
 
 
 # Initialize FastMCP server and WebSocket connection
-mcp = FastMCP("matter-mcp-server-sse")
 ws_connection = WebSocketConnection()
 
 
@@ -190,7 +195,7 @@ async def read_attribute(node_id: int, attribute_path: str) -> dict[str, Any]:
 
     Args:
         node_id: The ID of the node
-        attribute_path: The attribute path in format "endpoint/cluster/attribute"
+        attribute_path: The attribute path in format 'endpoint/cluster/attribute'
 
     Returns:
         The attribute value in the response
@@ -222,7 +227,8 @@ async def start_server():
     """Start the server."""
     tasks = await initialize_server()
     try:
-        await mcp.run(transport="sse")  # Changed from run_async to run
+        # Run the MCP server directly without asyncio.run
+        await mcp.run_sse_async()
     finally:
         for task in tasks:
             task.cancel()
@@ -230,4 +236,5 @@ async def start_server():
 
 
 if __name__ == "__main__":
-    asyncio.run(start_server())
+    # Use anyio.run instead of asyncio.run
+    anyio.run(start_server)
