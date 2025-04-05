@@ -1,12 +1,15 @@
 """Matter Control Protocol (MCP) server implementation with SSE transport for WebSocket-based device control."""
+
 import asyncio
-from collections.abc import AsyncGenerator
-import json
-from typing import Any, Optional
+import logging
+from typing import Any
+
 import anyio
+from mcp.server.fastmcp import FastMCP
 from WebSocketConnection import WebSocketConnection
 
-from mcp.server.fastmcp import FastMCP
+# Initialize logging
+logger = logging.getLogger(__name__)
 
 # Initialize FastMCP server with CORS configuration
 mcp = FastMCP(
@@ -17,7 +20,8 @@ mcp = FastMCP(
 ws_connection = WebSocketConnection()
 
 # Add debug logging to see if the tool is registered
-print(f"Registered tools: {mcp.list_tools()}")
+logger.debug("Registered tools: %s", mcp.list_tools())
+
 
 @mcp.tool()
 async def commission_on_network(setup_pin_code: int = 20202021) -> dict[str, Any]:

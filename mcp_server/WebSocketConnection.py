@@ -1,8 +1,14 @@
+import asyncio
+import json
+import logging
+from typing import Optional
+
 import aiohttp
 from aiohttp import WSMsgType
-import asyncio
-from typing import Any, Optional
-import json
+
+# Initialize logging
+logger = logging.getLogger(__name__)
+
 
 class WebSocketConnection:
     """WebSocket connection handler for Matter Control Protocol.

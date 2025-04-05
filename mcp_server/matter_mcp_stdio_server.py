@@ -2,12 +2,16 @@
 
 import asyncio
 import json
+import logging
 import time
 from typing import Any, Optional
 
 import aiohttp
 from aiohttp import WSMsgType
 from mcp.server.fastmcp import FastMCP
+
+# Initialize logging
+logger = logging.getLogger(__name__)
 
 # Initialize FastMCP server
 mcp = FastMCP("matter-mcp-server")
@@ -51,7 +55,7 @@ async def send_websocket_command(
                         continue
 
             except aiohttp.ClientError as err:
-                print(f"Error in websocket communication: {err}")
+                logger.error("Error in websocket communication: %s", err)
 
     return responses
 

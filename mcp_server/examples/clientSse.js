@@ -65,24 +65,24 @@ async function main() {
             CallToolResultSchema,
             { timeout: REQUEST_TIMEOUT },
         );
-        console.log(result_node)        
+        console.log(result_node)
         /*
         // Call the commission_on_network tool
         console.log('Calling commission_on_network tool...');
         try {
             const commissionResponse = await client.callTool(
-                { 
-                    name: 'commission_on_network', 
-                    arguments: { setup_pin_code: 20202021  } 
+                {
+                    name: 'commission_on_network',
+                    arguments: { setup_pin_code: 20202021  }
                 },
                 CallToolResultSchema,
-                { 
-                    timeout: REQUEST_TIMEOUT, 
+                {
+                    timeout: REQUEST_TIMEOUT,
                 },
             );
-            
+
             console.log('commissionResponse:', commissionResponse);
-                          
+
         } catch (error) {
             console.error('Error calling commission_on_network:', error);
             console.error('Error details:', error.stack);
@@ -91,18 +91,18 @@ async function main() {
         console.log('Calling start_listening tool...');
         try {
             const startListeningResponse = await client.callTool(
-                { 
-                    name: 'start_listening', 
-                    arguments: {} 
+                {
+                    name: 'start_listening',
+                    arguments: {}
                 },
                 CallToolResultSchema,
-                { 
-                    timeout: REQUEST_TIMEOUT, 
+                {
+                    timeout: REQUEST_TIMEOUT,
                 },
             );
-            
+
             console.log('startListeningResponse:', startListeningResponse);
-                          
+
         } catch (error) {
             console.error('Error calling start_listening:', error);
             console.error('Error details:', error.stack);
