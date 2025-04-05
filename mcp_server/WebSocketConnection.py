@@ -33,17 +33,28 @@ class WebSocketConnection:
 
     async def connect(self):
         """Establish WebSocket connection."""
+        self.session = None
         try:
             self.session = aiohttp.ClientSession()
-            self.ws = await self.session.ws_connect(self.url)
-            # Ignore initial status message
-            await self.ws.receive()
-            self.ready.set()
-        except (aiohttp.ClientError, aiohttp.WebSocketError, ConnectionError) as err:
-            print(f"Connection error: {err}")
-            if self.session:
-                await self.session.close()
+            try:
+                self.ws = await self.session.ws_connect(self.url)
+                # Ignore initial status message with timeout
+                msg = await asyncio.wait_for(self.ws.receive(), timeout=5.0)
+                logger.debug("Received initial message: %s", msg.type)
+                self.ready.set()
+            except asyncio.TimeoutError as err:
+                logger.error("Timeout waiting for initial message: %s", err)
+                if self.ws:
+                    await self.ws.close()
+                raise
+        except (aiohttp.ClientError, aiohttp.WebSocketError, ConnectionError, asyncio.TimeoutError) as err:
+            logger.error("Connection error: %s", err)
             raise
+        finally:
+            # If we failed after creating the session but before assigning self.ws or setting ready
+            if not self.ready.is_set() and self.session:
+                await self.session.close()
+                self.session = None
 
     async def disconnect(self):
         """Close WebSocket connection."""
@@ -74,7 +85,7 @@ class WebSocketConnection:
                 ConnectionError,
                 json.JSONDecodeError,
             ) as err:
-                print(f"WebSocket error: {err}")
+                logger.error("WebSocket error: %s", err)
                 await asyncio.sleep(1)
 
     async def maintain_connection(self):
@@ -89,7 +100,7 @@ class WebSocketConnection:
                 aiohttp.WebSocketError,
                 ConnectionError,
             ) as err:
-                print(f"WebSocket error: {err}")
+                logger.error("WebSocket error: %s", err)
                 await asyncio.sleep(1)
 
     async def send_messages(self):
@@ -106,5 +117,5 @@ class WebSocketConnection:
                 aiohttp.WebSocketError,
                 ConnectionError,
             ) as err:
-                print(f"Error sending message: {err}")
+                logger.error("Error sending message: %s", err)
                 await asyncio.sleep(1)
