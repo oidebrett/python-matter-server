@@ -1,3 +1,5 @@
+"""SSE server for streaming Matter events to clients."""
+
 import asyncio
 from contextlib import suppress
 import json
@@ -56,20 +58,21 @@ async def event_stream():
                 pass  # No messages available
 
             await asyncio.sleep(2)
-        except Exception as e:
+        except (OSError, asyncio.CancelledError, RuntimeError) as e:
             yield f"data: Error: {str(e)}\n\n"
             await asyncio.sleep(5)  # Wait longer after an error
 
 
-@app.get("/matter_updates")
+@app.get("/updates")
 async def sse_endpoint():
     """SSE endpoint that streams real-time events."""
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 
 async def start_listening() -> dict[str, Any]:
-    """Start listening for Matter events and stream them to the
-    client when the client calls the url endpoint /sse.
+    """Start listening for Matter events and stream them to the client.
+
+    Client can access events by calling the url endpoint /sse.
     """
     print("start_listening called!")
 
@@ -97,7 +100,7 @@ async def start_listening() -> dict[str, Any]:
     except asyncio.TimeoutError:
         print("Timeout while waiting for WebSocket response!")
         return {"status": "timeout"}
-    except Exception as e:
+    except (OSError, ConnectionError, RuntimeError) as e:
         print(f"Error in start_listening: {e}")
         return {"status": "error", "message": str(e)}
 
@@ -114,7 +117,7 @@ async def initialize_server():
 
 async def start_server():
     """Start the server."""
-    tasks = await initialize_server()
+    await initialize_server()  # Remove unused assignment
 
 
 if __name__ == "__main__":
@@ -123,9 +126,11 @@ if __name__ == "__main__":
     # Use anyio to run both the websocket connection and the uvicorn server
     async def run_everything():
         """Run both the websocket connection and the uvicorn server."""
-        global tasks
+        # Use nonlocal instead of global
         print("Initializing WebSocket connection...")
-        tasks = await initialize_server()
+        server_tasks = await initialize_server()
+        # Store tasks in the outer scope variable
+        tasks.extend(server_tasks)
         print("WebSocket connection initialized, starting HTTP server...")
         config = uvicorn.Config(app, host="0.0.0.0", port=8001, log_level="info")
         server = uvicorn.Server(config)
@@ -134,7 +139,7 @@ if __name__ == "__main__":
         # Setup signal handlers for graceful shutdown
         original_handler = signal.getsignal(signal.SIGINT)
 
-        def signal_handler(sig, frame):
+        def signal_handler(sig, frame) -> None:
             print("Received shutdown signal, cleaning up...")
             asyncio.create_task(shutdown_event())
             # Restore original handler to allow a second Ctrl+C to force exit

@@ -25,7 +25,11 @@ logger.debug("Registered tools: %s", mcp.list_tools())
 
 @mcp.tool()
 async def commission_on_network(setup_pin_code: int = 20202021) -> dict[str, Any]:
-    """Commission a device that's already on the network."""
+    """Commission a device that's already on the network.
+
+    Args:
+        setup_pin_code: The setup PIN code for commissioning. Default value is 20202021.
+    """
     await ws_connection.ready.wait()  # Wait for connection to be ready
 
     message = {
